@@ -3,9 +3,12 @@ html
 
   head
     title My App!
+    link(rel="stylesheet" href="/css/main.css")
 
   body
 
+    include nav.pug
+
     block content
 
-  script(src="/js/main.js")    
+    script(src="/js/main.js")

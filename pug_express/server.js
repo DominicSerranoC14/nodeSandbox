@@ -23,15 +23,19 @@ app.set('views', `${__dirname}/partials`);
 // }
 
 // middlewares
-// Will use the static dir views for templates
+// Serving up the public directory files for js and css
 app.use(express.static('public'));
 
 // routes
 app.get('/', (req, res) => {
-  res.render('index')
+  res.render('index');
+});
+
+app.get('/about', (req, res) => {
+  res.render('about');
 });
 
 // Listen to requests on the provided port and log when available
-app.listen(port, () =>
+app.listen(port, () => {
   console.log(`Listening on port: ${port}`)
-);
+});
