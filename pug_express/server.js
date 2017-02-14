@@ -13,6 +13,9 @@ const port = process.env.PORT || 3000;
 app.set('port', port);
 // pug configuration
 app.set('view engine', 'pug');
+// By default, node will look for partials in the 'views'
+// This is how to change the path of views
+app.set('views', `${__dirname}/partials`);
 
 // Using local vars
 // if (process.env.NODE_ENV !== 'production') {
@@ -21,7 +24,7 @@ app.set('view engine', 'pug');
 
 // middlewares
 // Will use the static dir views for templates
-app.use(express.static('views'));
+app.use(express.static('public'));
 
 // routes
 app.get('/', (req, res) => {
