@@ -5,14 +5,9 @@ body {
   font-size: 20px;
 }
 
-ul > li {
-  display: inline;
-  color: black;
-  margin: 2rem;
-}
-
 a {
   text-decoration: none;
+  margin: 2rem;
 }
 
 a:hover {

@@ -1,5 +1,11 @@
-ul
-  li
-    a(href="/") Home
-  li
-    a(href="/about") About
+//- can type in code blocks, of multiline code
+
+//- using hardcoded array to populate nav bar
+-
+  let navOptions = [
+    { url: '/', name: 'Home' },
+    { url: '/about', name: 'About' }
+  ];
+
+each item in navOptions
+  a(href=`${item.url}`)= item.name
