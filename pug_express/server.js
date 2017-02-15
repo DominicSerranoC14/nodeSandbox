@@ -29,11 +29,11 @@ app.use(express.static('public'));
 // routes
 app.get('/', (req, res) => {
   // Can send json in render
-  res.render('index', { pageName: 'Home' });
+  res.render('index', { homePage: true });
 });
 
 app.get('/about', (req, res) => {
-  res.render('about', {pageName: 'About'});
+  res.render('about', { aboutPage: true });
 });
 
 // Listen to requests on the provided port and log when available

@@ -1,5 +1,18 @@
 extends layout.pug
 
 block content
+  - let header = 'about';
+  //- hardcoded varibles
+  -
+    let textArray = [
+      'This is one line',
+      'This is another line',
+      'This is the last line'
+    ];
 
-  h1 This is the about page.
+  //- example of 
+  h1 This is the #{header.toUpperCase()} page
+
+  //- can type in code blocks, of multiline code
+  each line in textArray
+    p= line

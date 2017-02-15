@@ -1,14 +1,8 @@
-//- can type in code blocks, of multiline code
-
-//- using hardcoded array to populate nav bar
--
-  let navOptions = [
-    { url: '/', name: 'Home' },
-    { url: '/about', name: 'About' }
-  ];
-
 #nav
-  each item in navOptions
-    //- Using conditional statements to show nav bar options
-    if item.name !== pageName
-      a(href=`${item.url}`)= item.name
+
+  if aboutPage
+    a(href='/') Home
+  if homePage
+    a(href='/about') About
+  //- using hardcoded array to populate nav bar
+  //- Using conditional statements to show nav bar options
