@@ -1,16 +1,17 @@
 {
   "name": "pug_express",
   "version": "1.0.0",
-  "description": "",
+  "description": "Integrating an Express server and using the npm SQLite3 driver to interact with a SQLite database.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.14.1",
-    "pug": "^2.0.0-beta11"
+    "pug": "^2.0.0-beta11",
+    "sqlite3": "^3.1.8"
   }
 }
