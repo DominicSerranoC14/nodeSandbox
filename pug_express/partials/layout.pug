@@ -1,0 +1,17 @@
+doctype html
+html
+
+  head
+    title My App!
+    link(rel="stylesheet" href="/css/main.css")
+
+  body
+
+    //- Include the nav partial in
+    include nav.pug
+
+    //- can be overridden with child block content
+    //- block content is dynamic and can be used with several pug files
+    block content
+
+    script(src="/js/main.js")
