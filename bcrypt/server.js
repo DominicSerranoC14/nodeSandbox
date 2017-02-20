@@ -3,6 +3,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
+const bcrypt = require('bcrypt');
 
 // Connect to the database
 const environment = process.env.NODE_ENV || 'development';
@@ -20,7 +21,23 @@ app.get('/', (req, res) => {
   res.render('index');
 });
 
-app.post('/', ({body: {username, password}}, res) => {
+app.post('/', ({ body: {username, password} }, res) => {
+  // Check for existing user
+  db('users').where({ 'username': username })
+  .first('username')
+  .then((user) => {
+
+    if (user) {
+      //If user compare hashes
+      console.log(user);
+    } else {
+      // If no user, throw error
+      res.send({ err: 'No user found. Please sign in.' });
+    };
+
+  })
+  .catch((err) => console.log(err.toString()));
+
   console.log('LOGIN', username, password);
   res.render('index');
 });
@@ -41,7 +58,24 @@ app.post('/register', ({body: {username, password}}, res) => {
       res.render('register', {err: 'This user already exists.'})
     } else {
       // Hash password and create user
-      res.send('Successfully registered. Please log in.');
+      // First function generates salt
+      // **: passing it a rounds param will determine how many are generated before the final salt
+      // Default rounds will be 10
+      bcrypt.genSalt(10, (err, salt) => {
+        // Now pass in the plaintext password and salt and generate a hash
+        bcrypt.hash(password, salt, (err, hash) => {
+          // Save user to database with hash as password
+          db('users').insert({ username, password: hash })
+          .then((result) => {
+            // Send success msg if registered
+            res.send('Successfully registered. Please log in.');
+          })
+          .catch((err) => {
+            console.log(err.toString());
+            res.send({ err: 'Oops, try again.' });
+          });
+        })
+      })
     };
 
 
@@ -51,7 +85,3 @@ app.post('/register', ({body: {username, password}}, res) => {
 });
 
 app.listen(3000, () => console.log('Listening on port 3000'));
-
-// Will return all users
-// db('users').select()
-// .then((res) => console.log(res))
