@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const app = express();
 
 app.set('view engine', 'pug');
+app.use(express.static('public'));
 // A new body object containing the parsed data is populated on the request object after the middleware (i.e. req.body). This object will contain key-value pairs, where the value can be a string or array (when extended is false), or any type (when extended is true).
 app.use(bodyParser.urlencoded({extended: false}));
 

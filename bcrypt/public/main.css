@@ -1,0 +1,9 @@
+body {
+  text-align: center;
+}
+
+form {
+  border: black 1px solid;
+  width: 30%;
+  margin: auto;
+}
