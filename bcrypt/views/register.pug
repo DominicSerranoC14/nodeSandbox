@@ -21,4 +21,7 @@ html
       p
         input#password(type="password" placeholder="Password" name="password")
       p
-        button(type="submit") Login
+        button(type="submit") Register
+        
+      if err
+        p= err
