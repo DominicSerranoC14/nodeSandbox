@@ -22,6 +22,15 @@ app.get('/', (req, res) => {
 app.post('/', ({body: {username, password}}, res) => {
   console.log(username, password);
   res.render('index');
-})
+});
+
+app.get('/register', (req, res) => {
+  res.render('register');
+});
+
 
 app.listen(3000, () => console.log('Listening on port 3000'));
+
+// Will return all users
+// db('users').select()
+// .then((res) => console.log(res))

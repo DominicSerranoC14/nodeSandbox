@@ -1,9 +1,19 @@
 body {
   text-align: center;
+  font: 30px;
 }
 
 form {
   border: black 1px solid;
   width: 30%;
   margin: auto;
+}
+
+ul > li {
+  display: inline-block;
+  margin: 0 2rem;
+}
+
+a {
+  text-decoration: none;
 }
