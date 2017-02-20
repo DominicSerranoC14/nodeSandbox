@@ -22,24 +22,30 @@ app.get('/', (req, res) => {
 });
 
 app.post('/', ({ body: {username, password} }, res) => {
-  // Check for existing user
+  // Check for existing user and return username and password
   db('users').where({ 'username': username })
-  .first('username')
+  .first(['username', 'password'])
   .then((user) => {
 
     if (user) {
-      //If user compare hashes
-      console.log(user);
+      //If there is a user compare hashes
+      bcrypt.compare(password, user.password, (err, result) => {
+        if (result) {
+          // If passwords match send user to home page, which show's their usernme
+          res.render('home', {username});
+        } else {
+          // Send error msg that password doesn't match
+          res.render('index', { err: 'Password does not match, try again.' });
+        };
+      });
     } else {
       // If no user, throw error
-      res.send({ err: 'No user found. Please sign in.' });
+      res.render('index', { err: 'No user found. Please sign in.' });
     };
 
   })
   .catch((err) => console.log(err.toString()));
 
-  console.log('LOGIN', username, password);
-  res.render('index');
 });
 
 // Register routes
@@ -68,7 +74,7 @@ app.post('/register', ({body: {username, password}}, res) => {
           db('users').insert({ username, password: hash })
           .then((result) => {
             // Send success msg if registered
-            res.send('Successfully registered. Please log in.');
+            res.render('home', {  username });
           })
           .catch((err) => {
             console.log(err.toString());
