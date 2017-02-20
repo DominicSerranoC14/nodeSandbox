@@ -1,10 +1,10 @@
 body {
   text-align: center;
-  font: 30px;
+  font-size: 20px;
 }
 
 form {
-  border: black 1px solid;
+  border: black 2px solid;
   width: 30%;
   margin: auto;
 }

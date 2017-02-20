@@ -31,8 +31,8 @@ app.post('/', ({ body: {username, password} }, res) => {
       //If there is a user compare hashes
       bcrypt.compare(password, user.password, (err, result) => {
         if (result) {
-          // If passwords match send user to home page, which show's their usernme
-          res.render('home', {username});
+          // If passwords match send user to home page
+          res.redirect('/home');
         } else {
           // Send error msg that password doesn't match
           res.render('index', { err: 'Password does not match, try again.' });
@@ -40,7 +40,7 @@ app.post('/', ({ body: {username, password} }, res) => {
       });
     } else {
       // If no user, throw error
-      res.render('index', { err: 'No user found. Please sign in.' });
+      res.render('index', { err: 'Incorrect password / username combo. Please try again.' });
     };
 
   })
@@ -74,11 +74,11 @@ app.post('/register', ({body: {username, password}}, res) => {
           db('users').insert({ username, password: hash })
           .then((result) => {
             // Send success msg if registered
-            res.render('home', {  username });
+            res.redirect('/home');
           })
           .catch((err) => {
             console.log(err.toString());
-            res.send({ err: 'Oops, try again.' });
+            res.send({ err: 'Oops, please try again.' });
           });
         })
       })
@@ -89,5 +89,11 @@ app.post('/register', ({body: {username, password}}, res) => {
   .catch((err) => console.log(err.toString()))
 
 });
+
+// Home route
+app.get('/home', (req, res) => {
+  res.render('home');
+});
+
 
 app.listen(3000, () => console.log('Listening on port 3000'));
