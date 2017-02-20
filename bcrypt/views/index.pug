@@ -1,0 +1,30 @@
+doctype html
+html
+  head
+    title Authy McAuthFace
+    link(rel="stylesheet" href="/main.css")
+    link(rel="shortcut icon" href="/code-braces.png")
+  body
+
+    //- nav
+    ul
+      li
+        a(href="/") Login
+      li
+        a(href="/register") Register
+
+    h1 Welcome to the auth app
+
+    form(method="POST")
+      h4 Login
+
+      p
+        input#username(type="text" placeholder="Username" name="username")
+      p
+        input#password(type="password" placeholder="Password" name="password")
+      p
+        button(type="submit") Login
+
+      //- display login err here from server
+      if err
+        p= err

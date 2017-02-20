@@ -9,10 +9,10 @@ const db = require('knex')(configuration);
 // can pass in string of table
 // Returns promise
 db('students').select()
-  .then(function(res) {
-    console.log(res);
-  })
-  .catch(function(error) {
-    // Convert error object to string
-    console.log(error.toString())
+.then(function(res) {
+  console.log(res);
+})
+.catch(function(error) {
+  // Convert error object to string
+  console.log(error.toString())
 });
