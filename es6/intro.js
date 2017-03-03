@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 // Basic es6 syntax usage
 
 let list = [1,2,3,4,5];
@@ -42,6 +44,8 @@ let otherCountries = ['USA', 'Jordan'];
 
 let joinedArrays = [...countries, ...otherCountries];
 
-for (let key in x) {
-  console.log(key)
-}
+// Deconstruct an object as a function param
+function sayName({name, breed}) {
+  console.log(name, breed);
+};
+// sayName(dog);
