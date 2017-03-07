@@ -3,7 +3,7 @@
 const express = require('express');
 const app = express();
 const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('./data/demodb02.sqlite');
+const db = new sqlite3.Database('demodb.sqlite');
 
 // Display a index of possible routes
 app.get('/', (req, res) => {
