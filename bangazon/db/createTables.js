@@ -1,6 +1,6 @@
 'use strict';
 
-const { DB } = require('./db.js');
+const { DB } = require('../db.js');
 
 const errHandler = (err) => (err) ? console.log(err.toString()) : false;
 
