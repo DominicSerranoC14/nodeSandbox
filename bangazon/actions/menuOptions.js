@@ -2,6 +2,8 @@
 
 const readline = require('readline');
 const { createCustomer } = require('./createCustomer.js');
+const { showActiveCustomers } = require('./activeCustomer.js');
+const newRL = require('../readline.js');
 
 const startMenu = () => {
 
@@ -18,12 +20,7 @@ const startMenu = () => {
   7. Leave Bangazon!
   `);
 
-  const RL = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-    prompt: 'BANGAZON > '
-  });
-
+  const RL = newRL();
   RL.prompt();
 
   RL.on('line', (line) => {
@@ -35,7 +32,8 @@ const startMenu = () => {
         break;
       case 2:
         // 2. Choose active customer
-        console.log('2');
+        RL.close();
+        showActiveCustomers();
         break;
       case 3:
         // 3. Create a payment option

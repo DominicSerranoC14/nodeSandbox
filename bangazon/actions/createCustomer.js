@@ -1,19 +1,14 @@
 'use strict';
 
 const { DB, errHandler } = require('../db.js');
-const readline = require('readline');
+const newRL = require('../readline.js');
 let RL;
 let counter = 0;
 
 const createCustomer = () => {
-  RL = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-    prompt: 'BANGAZON > '
-  });
+  RL = newRL();
   customerQuestions();
 };
-
 
 const newCustomer = {
   name: { q: 'Enter customer name: ', a: null },
@@ -30,7 +25,7 @@ const customerQuestions = () => {
     insertCustomer(newCustomer);
     // Close prompt before executing startMenu
     RL.close();
-    console.log(`Customer ${newCustomer.name.a} created.`);
+    console.log(`\nCustomer ${newCustomer.name.a} created.\n`);
     // Require in startMenu method here to avoid circular dep
     setTimeout(require('./menuOptions.js').startMenu, 2000);
   } else {
