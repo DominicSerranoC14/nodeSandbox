@@ -1,6 +1,6 @@
 'use strict';
 
-const { DB } = require('../db.js');
+const { DB, errHandler } = require('../db.js');
 const readline = require('readline');
 let RL;
 let counter = 0;
@@ -34,7 +34,9 @@ const customerQuestions = () => {
     // Require in startMenu method here to avoid circular dep
     setTimeout(require('./menuOptions.js').startMenu, 2000);
   } else {
+    // Store the values of newCustomer
     const vals = Object.values(newCustomer);
+    // Ask a question and assign the answer to the corresponding object
     RL.question(vals[counter].q, (a) => {
       vals[counter].a = a;
       counter++;
@@ -45,7 +47,11 @@ const customerQuestions = () => {
 };
 
 const insertCustomer = ({ name, address, city, state, postal, phone }) => {
-  // console.log(name, address, city, state, postal, phone);
+  DB.run(`insert into customers values (
+    null, "${name.a}", "${address.a}",
+    "${city.a}", "${state.a}",
+    "${postal.a}", "${phone.a}"
+  )`, errHandler)
 };
 
 module.exports = { createCustomer };
