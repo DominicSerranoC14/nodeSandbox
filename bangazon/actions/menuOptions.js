@@ -3,7 +3,10 @@
 const readline = require('readline');
 const { createCustomer } = require('./createCustomer.js');
 const { showActiveCustomers } = require('./activeCustomer.js');
-const newRL = require('../readline.js');
+// const newRL = require('../readline.js');
+let p = require('prompt');
+p.start();
+
 
 const startMenu = () => {
 
@@ -20,19 +23,15 @@ const startMenu = () => {
   7. Leave Bangazon!
   `);
 
-  const RL = newRL();
-  RL.prompt();
+  p.get('$', (err, { $ }) => {
 
-  RL.on('line', (line) => {
-    switch(parseInt(line)) {
+    switch(parseInt($)) {
       case 1:
-        // 1. Create a customer account
-        RL.close();
         createCustomer();
         break;
       case 2:
         // 2. Choose active customer
-        RL.close();
+        // RL.close();
         showActiveCustomers();
         break;
       case 3:
@@ -60,10 +59,10 @@ const startMenu = () => {
         console.log(`Say what? I might have heard '${line.trim()}'`);
         break;
     };
-
-    // Create new prompt after each
-    // RL.prompt();
-
+  //
+  //   // Create new prompt after each
+  //   // RL.prompt();
+  //
   });
 
 };
