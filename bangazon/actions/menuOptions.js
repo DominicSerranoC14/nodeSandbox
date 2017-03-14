@@ -3,10 +3,8 @@
 const readline = require('readline');
 const { createCustomer } = require('./createCustomer.js');
 const { showActiveCustomers } = require('./activeCustomer.js');
-// const newRL = require('../readline.js');
-let p = require('prompt');
-p.start();
-
+// prompt.start() is not needed, require seems to activate it
+const prompt = require('prompt');
 
 const startMenu = () => {
 
@@ -23,15 +21,14 @@ const startMenu = () => {
   7. Leave Bangazon!
   `);
 
-  p.get('$', (err, { $ }) => {
-
+  prompt.get('$', (err, { $ }) => {
     switch(parseInt($)) {
       case 1:
+        // 1. Create new customer
         createCustomer();
         break;
       case 2:
         // 2. Choose active customer
-        // RL.close();
         showActiveCustomers();
         break;
       case 3:
@@ -56,13 +53,10 @@ const startMenu = () => {
         process.exit();
         break;
       default:
-        console.log(`Say what? I might have heard '${line.trim()}'`);
+        console.log(`Say what? I might have heard '${$}'`);
+        setTimeout(startMenu, 1000);
         break;
     };
-  //
-  //   // Create new prompt after each
-  //   // RL.prompt();
-  //
   });
 
 };
