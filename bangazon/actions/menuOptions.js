@@ -3,36 +3,34 @@
 const readline = require('readline');
 const { createCustomer } = require('./createCustomer.js');
 const { showActiveCustomers } = require('./activeCustomer.js');
-const newRL = require('../readline.js');
+// prompt.start() is not needed, require seems to activate it
+const prompt = require('prompt');
+// Add custom message and delimiter
+prompt.message = 'BANGAZON';
+prompt.delimiter = ' ';
+
 
 const startMenu = () => {
+console.log(`
+1. Create a customer account
+2. Choose active customer
+3. Create a payment option
+4. Add product to shopping cart
+5. Complete an order
+6. See product popularity
+7. Leave Bangazon!
 
-  console.log(`
-  *********************************************************
-  **  Welcome to Bangazon! Command Line Ordering System  **
-  *********************************************************
-  1. Create a customer account
-  2. Choose active customer
-  3. Create a payment option
-  4. Add product to shopping cart
-  5. Complete an order
-  6. See product popularity
-  7. Leave Bangazon!
-  `);
+Please enter your selection (numbers only).
+`);
 
-  const RL = newRL();
-  RL.prompt();
-
-  RL.on('line', (line) => {
-    switch(parseInt(line)) {
+  prompt.get('$', (err, { $ }) => {
+    switch(parseInt($)) {
       case 1:
-        // 1. Create a customer account
-        RL.close();
+        // 1. Create new customer
         createCustomer();
         break;
       case 2:
         // 2. Choose active customer
-        RL.close();
         showActiveCustomers();
         break;
       case 3:
@@ -57,13 +55,10 @@ const startMenu = () => {
         process.exit();
         break;
       default:
-        console.log(`Say what? I might have heard '${line.trim()}'`);
+        console.log(`Say what? I might have heard '${$}'`);
+        setTimeout(startMenu, 1000);
         break;
     };
-
-    // Create new prompt after each
-    // RL.prompt();
-
   });
 
 };
