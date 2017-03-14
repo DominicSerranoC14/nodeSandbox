@@ -61,9 +61,6 @@ const startMenu = () => {
         break;
     };
 
-    // Create new prompt after each
-    // RL.prompt();
-
   });
 
 };
