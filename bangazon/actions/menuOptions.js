@@ -6,8 +6,9 @@ const { showActiveCustomers } = require('./activeCustomer.js');
 const { getPaymentOptions } = require('./paymentOption.js');
 // prompt.start() is not needed, require seems to activate it
 const prompt = require('prompt');
+const { red } = require('colors/safe');
 // Add custom message and delimiter
-prompt.message = 'BANGAZON';
+prompt.message = red('BANGAZON');
 prompt.delimiter = ' ';
 
 
