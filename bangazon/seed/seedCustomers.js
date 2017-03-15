@@ -11,5 +11,3 @@ module.exports = () => {
     )`, errHandler);
   });
 };
-
-// module.exports = { seedCustomers };

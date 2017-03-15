@@ -10,7 +10,3 @@ module.exports = () => {
     )`, errHandler);
     });
 };
-
-// seedProducts();
-//
-// module.exports = { seedProducts };

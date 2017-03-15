@@ -3,21 +3,56 @@
 const { DB, errHandler } = require('../db.js');
 const prompt = require('prompt');
 
-// Query the database and display all users
+
 const showActiveCustomers = () => {
-  console.log('Which customer will be active?');
-  DB.each(`select customer_id, name from customers`, (err, {customer_id, name}) => {
+  // Query the database for all customers
+  DB.all(`select customerId, name from customers`, (err, results) => {
     errHandler(err);
-    console.log(`${customer_id}. ${name}`);
-  }, captureActiveListener);
+
+    // If no user has been created
+    if (results.length < 1) {
+      console.log(`\nPlease create a customer first.\n`);
+      return setTimeout(require('./menuOptions.js').startMenu, 1500);
+    }
+
+    // If there are user(s) log each out to the console
+    console.log('\nWhich customer will be active?\n');
+    results.forEach(({customerId, name}) => {
+      console.log(`${customerId}. ${name}`);
+    });
+    // Console.log for sinlge line space
+    console.log('');
+
+  })
+  // Chain onto the DB and execute setActiveUser after results.forEach has ran
+  .run(``, setActiveUser);
 };
 
+
 // Creates the prompt to capture the active listener
-const captureActiveListener = () => {
+const setActiveUser = () => {
   // Capture input from user and query the db to get the user
   prompt.get('$', (err, { $ }) => {
-    DB.get(`select name from customers where customer_id = ${parseInt($)}`, (err, { name }) => {
-      console.log(`\nWelcome ${name}!\n`);
+
+    // If the user input is not a number, execute showActiveCustomers again
+    if (isNaN($)) {
+      console.log('\nPlease enter an number.\n');
+      return setTimeout(showActiveCustomers, 1500);
+    };
+
+    // Search for a specific user with user input
+    DB.all(`select name from customers where customerId = ${parseInt($)}`, (err, results) => {
+      errHandler(err);
+
+      // If no results return, no such user exists. Display users
+      if (results.length < 1) {
+        console.log('\nNo such user exists. Please select another.\n');
+        return setTimeout(showActiveCustomers, 1500);
+      };
+
+      // Store the current user on the process.env obj
+      let [{name}] = results;
+      process.env.CURRENT_USER = name;
       // Require in startMenu method here to avoid circular dep
       setTimeout(require('./menuOptions.js').startMenu, 2000);
     });
