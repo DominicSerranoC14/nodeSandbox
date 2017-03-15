@@ -10,8 +10,12 @@ prompt.message = 'BANGAZON';
 prompt.delimiter = ' ';
 
 
+// Display startMenu and activates prompt and main switch statement
 const startMenu = () => {
+  let user = process.env.CURRENT_USER;
 console.log(`
+${(user) ? `Welcome ${user}! What would you like to do?` : '' }
+
 1. Create a customer account
 2. Choose active customer
 3. Create a payment option
@@ -55,7 +59,7 @@ Please enter your selection (numbers only).
         process.exit();
         break;
       default:
-        console.log(`Say what? I might have heard '${$}'`);
+        console.log(`\nEnter numbers only please!\n`);
         setTimeout(startMenu, 1000);
         break;
     };

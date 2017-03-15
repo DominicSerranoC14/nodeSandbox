@@ -11,7 +11,7 @@ const createCustomer = () => {
   console.log(`\nPlease enter the following information to create a new customer account.\n`);
   // Using prompt, ask the user the required fields
   prompt.get(list, (err, resultObj) => {
-    console.log(`\nCustomer ${resultObj.Name} created.\n`);
+    console.log(`\nCustomer account for ${resultObj.Name} created!\n`);
     // Insert the new customer into the db
     insertCustomer(resultObj);
     // Store the newly created customer as the currentUser
