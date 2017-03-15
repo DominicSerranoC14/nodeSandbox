@@ -19,10 +19,13 @@ const showActiveCustomers = () => {
     console.log('\nWhich customer will be active?\n');
     results.forEach(({customerId, name}) => {
       console.log(`${customerId}. ${name}`);
-      setActiveUser();
     });
+    // Console.log for sinlge line space
+    console.log('');
 
-  });
+  })
+  // Chain onto the DB and execute setActiveUser after results.forEach has ran
+  .run(``, setActiveUser);
 };
 
 
