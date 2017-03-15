@@ -3,8 +3,9 @@
 const { DB, errHandler } = require('../db.js');
 const prompt = require('prompt');
 
-// Query the database and display all users
+
 const showActiveCustomers = () => {
+  // Query the database for all customers
   DB.all(`select customerId, name from customers`, (err, results) => {
     errHandler(err);
 
@@ -29,11 +30,14 @@ const showActiveCustomers = () => {
 const setActiveUser = () => {
   // Capture input from user and query the db to get the user
   prompt.get('$', (err, { $ }) => {
+
+    // If the user input is not a number, execute showActiveCustomers again
     if (isNaN($)) {
       console.log('\nPlease enter an number.\n');
       return setTimeout(showActiveCustomers, 1500);
     };
 
+    // Search for a specific user with user input
     DB.all(`select name from customers where customerId = ${parseInt($)}`, (err, results) => {
       errHandler(err);
 
