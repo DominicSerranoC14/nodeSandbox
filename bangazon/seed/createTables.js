@@ -11,7 +11,7 @@ DB.run(`create table if not exists customers
   postalCode INT,
   phoneNumber INT)
 `, errHandler)
-.run(`create table if not exists payment_options
+.run(`create table if not exists paymentOptions
   (paymentOptionId INTEGER PRIMARY KEY,
   name TEXT,
   accountNumber INT)

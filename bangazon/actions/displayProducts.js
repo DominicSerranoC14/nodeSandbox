@@ -14,4 +14,4 @@ const getAllProducts = () => {
 
 };
 
-getAllProducts();
+// getAllProducts();
