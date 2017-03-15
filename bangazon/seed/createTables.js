@@ -13,8 +13,10 @@ DB.run(`create table if not exists customers
 `, errHandler)
 .run(`create table if not exists paymentOptions
   (paymentOptionId INTEGER PRIMARY KEY,
+  customerId INT,
   name TEXT,
-  accountNumber INT)
+  accountNumber INT,
+  FOREIGN KEY(customerId) references customers(customerId))
 `, errHandler)
 .run(`create table if not exists orders
   (orderId INTEGER PRIMARY KEY,

@@ -3,6 +3,7 @@
 const readline = require('readline');
 const { createCustomer } = require('./createCustomer.js');
 const { showActiveCustomers } = require('./activeCustomer.js');
+const { getPaymentOptions } = require('./paymentOption.js');
 // prompt.start() is not needed, require seems to activate it
 const prompt = require('prompt');
 // Add custom message and delimiter
@@ -14,8 +15,7 @@ prompt.delimiter = ' ';
 const startMenu = () => {
   let user = process.env.CURRENT_USER;
 console.log(`
-${(user) ? `Welcome ${user}! What would you like to do?` : '' }
-
+${(user) ? `Welcome ${user}! What would you like to do?\n` : '' }
 1. Create a customer account
 2. Choose active customer
 3. Create a payment option
@@ -39,7 +39,7 @@ Please enter your selection (numbers only).
         break;
       case 3:
         // 3. Create a payment option
-        console.log('3');
+        getPaymentOptions();
         break;
       case 4:
         // 4. Add product to shopping cart

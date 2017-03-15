@@ -23,12 +23,12 @@ const getPaymentOptions = () => {
   // Determine if there is an active user
   let user = process.env.CURRENT_USER;
   if (!user) {
-    console.log(`Please create or choose a customer.`);
-    return setTimeout(require('./menuOptions.js').startMenu, 2000);
+    console.log(`\nPlease create or choose a customer.`);
+    return setTimeout(require('./menuOptions.js').startMenu, 1500);
   };
 
   // If active user, begin prompt
-  console.log(`Please enter the following information.`);
+  console.log(`\nPlease enter the following information.\n`);
   prompt.get(list, (err, resultObj) => {
     setPaymentOptions(resultObj);
   });
@@ -43,7 +43,11 @@ const setPaymentOptions = ({ paymentType, accountNumber }) => {
     errHandler(err);
     // Insert paymentOption info into DB
     DB.run(`insert into paymentOptions values
-      (${customerId}, "${paymentType}", "${accountNumber}")`, errHandler);
+      (null, ${customerId}, "${paymentType.toUpperCase()}", "${accountNumber}")`, errHandler);
+
+    console.log(`\nA ${paymentType} Payment Option has been saved to your accout.\n`);
+    // Navigate to startMenu
+    setTimeout(require('./menuOptions.js').startMenu, 2000);
   });
 };
 
