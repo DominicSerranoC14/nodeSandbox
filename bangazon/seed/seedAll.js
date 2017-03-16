@@ -1,5 +1,5 @@
 'use strict';
 
-// require('./seedCustomers.js')();
 // require('./seedPaymentTypes.js')();
+require('./seedCustomers.js')();
 require('./seedProducts.js')();
