@@ -1,13 +1,15 @@
 'use strict';
 
 const { DB, errHandler } = require('../db.js');
+const { getAllProducts } = require('./displayProducts');
 
 
 const determineIfUnpaidOrder = () => {
   let userId = process.env.CURRENT_USER_ID;
   // Check to make sure there is an active user
   if (!userId) {
-    return console.log('\nPlease create or choose an active customer.\n');
+    console.log('\nPlease create or choose an active customer.\n');
+    return setTimeout(require('./menuOptions.js').startMenu, 1500);
   };
 
   // Query to find unpaid orders for current customer
@@ -21,11 +23,13 @@ const determineIfUnpaidOrder = () => {
 
     // If there is an unpaid order, return that order obj
     if (resultArray.length > 0) {
+      getAllProducts();
       return process.env.CURRENT_ORDER_ID = resultArray[0].orderId;
     };
 
     // If all orders are paid, create a new order for the customer
     createOrder();
+    getAllProducts();
   });
 
 };

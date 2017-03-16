@@ -1,26 +1,45 @@
 'use strict';
 
 const { DB, errHandler } = require('../db.js');
-const { determineIfUnpaidOrder } = require('./createOrder');
+const prompt = require('prompt');
 
-process.env.CURRENT_USER_ID = 1;
-process.env.CURRENT_ORDER_ID;
 
 const getAllProducts = () => {
-
-  console.log('\nSelect a poduct(s) to add to your order.\n');
-
+  // Select all products from database to display
   DB.all(`select * from products`, (err, result) => {
     errHandler(err);
     // Retrieve all products from DB
+    console.log('\nSelect a poduct(s) to add to your order.\n');
+
     result.forEach(({name, price}, i) => {
       console.log(`${++i} DOMAIN: ${name}, PRICE: ${price} `);
     });
+    console.log('');
+    console.log('0 Back to main menu\n');
   })
-  .run(``, determineIfUnpaidOrder);
+  // Utilizing DB object to run functions async
+  .run(``, addProductToOrder)
+};
+
+
+const addProductToOrder = () => {
+  let orderId = process.env.CURRENT_USER_ID;
+  // Prompt user for product selection
+  prompt.get('$', (err, { $ }) => {
+
+    // Back to main menu option
+    if (parseInt($) === 0) {
+      return console.log('zero!');
+    };
+
+    // Insert product to orderLineItems table with orderId
+    DB.run(`insert into orderLineItems values (
+      null, ${orderId}, ${$}
+    )`, errHandler)
+    .run(``, getAllProducts);
+
+  });
 
 };
 
-module.exports = { getAllProducts }
-
-// getAllProducts();
+module.exports = { getAllProducts };
