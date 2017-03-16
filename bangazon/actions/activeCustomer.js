@@ -26,7 +26,7 @@ const showActiveCustomers = () => {
     console.log('');
 
   })
-
+  // Will run after the DB.all block, will only open prompt if users present
   .run(``, () => (resultArray.length > 0) ? setActiveUser(): false);
 };
 
@@ -55,6 +55,7 @@ const setActiveUser = () => {
       // Store the current user on the process.env obj
       let [{name}] = results;
       process.env.CURRENT_USER = name;
+      process.env.CURRENT_USER_ID = $;
       // Require in startMenu method here to avoid circular dep
       setTimeout(require('./menuOptions.js').startMenu, 2000);
     });

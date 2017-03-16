@@ -1,6 +1,5 @@
 'use strict';
 
-const readline = require('readline');
 const { createCustomer } = require('./createCustomer.js');
 const { showActiveCustomers } = require('./activeCustomer.js');
 const { getPaymentOptions } = require('./paymentOption.js');
