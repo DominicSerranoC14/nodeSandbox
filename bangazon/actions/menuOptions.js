@@ -3,6 +3,7 @@
 const { createCustomer } = require('./createCustomer.js');
 const { showActiveCustomers } = require('./activeCustomer.js');
 const { getPaymentOptions } = require('./paymentOption.js');
+const { getAllProducts } = require('./displayProducts.js');
 // prompt.start() is not needed, require seems to activate it
 const prompt = require('prompt');
 const { red } = require('colors/safe');
@@ -43,7 +44,7 @@ Please enter your selection (numbers only).
         break;
       case 4:
         // 4. Add product to shopping cart
-        console.log('4');
+        getAllProducts();
         break;
       case 5:
         // 5. Complete an order
