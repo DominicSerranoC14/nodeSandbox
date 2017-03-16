@@ -57,7 +57,7 @@ const setActiveUser = () => {
       process.env.CURRENT_USER = name;
       process.env.CURRENT_USER_ID = $;
       // Require in startMenu method here to avoid circular dep
-      setTimeout(require('./menuOptions.js').startMenu, 2000);
+      setTimeout(require('./menuOptions.js').startMenu, 1500);
     });
   });
 };

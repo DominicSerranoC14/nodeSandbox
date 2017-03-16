@@ -29,7 +29,7 @@ const addProductToOrder = () => {
 
     // Back to main menu option
     if (parseInt($) === 0) {
-      return console.log('zero!');
+      return require('./menuOptions.js').startMenu();
     };
 
     // Insert product to orderLineItems table with orderId
