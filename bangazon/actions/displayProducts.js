@@ -12,7 +12,7 @@ const getAllProducts = () => {
     console.log('\nSelect a poduct(s) to add to your order.\n');
 
     result.forEach(({name, price}, i) => {
-      console.log(`${++i} DOMAIN: ${name}, PRICE: ${price} `);
+      console.log(`${++i} DOMAIN: ${name}, PRICE: $${price} `);
     });
     console.log('');
     console.log('0 Back to main menu\n');
