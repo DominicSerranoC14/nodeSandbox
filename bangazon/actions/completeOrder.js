@@ -7,22 +7,25 @@ const prompt = require('prompt');
 const determineIfUnpaidOrderForCompletion = () => {
   let userId = process.env.CURRENT_USER_ID;
   // Check to make sure there is an active user
-  if (!userId) {
+  if (userId == 0) {
     console.log('\nPlease create or choose an active customer.\n');
     return setTimeout(require('./menuOptions.js').startMenu, 1500);
   };
 
   // Query to find unpaid orders for current customer
-  DB.all(`select * from orders o
-    where o.customerId = ${userId} and o.paymentStatus = -1
+  DB.all(`select * from orders
+    where customerId = ${userId} and paymentStatus = -1
   `, (err, resultArray) => {
     errHandler(err);
 
     // Check if there is an unpaid order
-    if (resultArray.length < 0) {
+    if (resultArray.length < 1) {
       console.log('\nPlease add some products to your order first.\n');
       return setTimeout(require('./menuOptions.js').startMenu, 1500);
     };
+
+    // Set the unpaid order as CURRENT_ORDER_ID
+    process.env.CURRENT_ORDER_ID = resultArray[0].orderId;
 
     // Check to see if unpaid order has any products yet
     determineIfOrderHasProducts();
@@ -95,10 +98,48 @@ const determinePaymentOptions = () => {
       return require('./paymentOption.js').getPaymentOptions();
     };
 
-    console.log('Need to prompt user which paymentOption to use now');
+    // Display paymentOption for user
+    displayPaymentOptionsForOrder();
 
   });
+};
 
+
+const displayPaymentOptionsForOrder = () => {
+  let userId = process.env.CURRENT_USER_ID;
+
+  // Select all paymentOptions for active user
+  DB.each(`select * from paymentOptions
+    where customerId = ${userId}
+  `, (err, { paymentOptionId, name, accountNumber }) => {
+    errHandler(err);
+    // Display each paymentOption
+    console.log(`${paymentOptionId} ${name} ${accountNumber}`);
+    // Completion callback
+  }, (err, result) => {
+    errHandler(err);
+    // Prompt user for paymentOption selection
+    setPaymentOptionsForOrder();
+  });
+};
+
+
+const setPaymentOptionsForOrder = () => {
+  let orderId = process.env.CURRENT_ORDER_ID;
+
+  // Prompt user for paymentOption selection
+  prompt.get({ name: '$', description: 'Select payment option (numbers only)'}, (err, { $ }) => {
+
+    // Update the active order with paymentOptionId and paid status
+    DB.run(`update orders set
+      paymentOptionId = ${$},
+      paymentStatus = 1
+      where orderId = ${orderId}
+    `, errHandler);
+
+    console.log('\nYour order is complete. Thanks for your payment.\n');
+    setTimeout(require('./menuOptions.js').startMenu, 1500);
+  });
 };
 
 

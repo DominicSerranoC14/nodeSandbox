@@ -5,6 +5,14 @@ const prompt = require('prompt');
 
 
 const getAllProducts = () => {
+  let userId = process.env.CURRENT_USER_ID;
+  // Check to see if there is a current user
+  console.log("userId", typeof userId);
+  if (userId == 0) {
+    console.log('\nPlease create or choose an active customer.\n');
+    return setTimeout(require('./menuOptions.js').startMenu, 1500);
+  };
+
   // Select all products from database to display
   DB.all(`select * from products`, (err, result) => {
     errHandler(err);
@@ -16,14 +24,16 @@ const getAllProducts = () => {
     });
     console.log('');
     console.log('0 Back to main menu\n');
+    addProductToOrder();
   })
   // Utilizing DB object to run functions async
-  .run(``, addProductToOrder)
+  // .run(``, addProductToOrder)
 };
 
 
 const addProductToOrder = () => {
-  let orderId = process.env.CURRENT_USER_ID;
+  let orderId = process.env.CURRENT_ORDER_ID;
+
   // Prompt user for product selection
   prompt.get('$', (err, { $ }) => {
 

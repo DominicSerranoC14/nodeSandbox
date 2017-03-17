@@ -9,6 +9,7 @@ let list = [ 'Name', 'Address', 'City', 'State', 'PostalCode', 'PhoneNumber' ];
 
 const createCustomer = () => {
   console.log(`\nPlease enter the following information to create a new customer account.\n`);
+  
   // Using prompt, ask the user the required fields
   prompt.get(list, (err, resultObj) => {
     console.log(`\nCustomer account for ${resultObj.Name} created!\n`);

@@ -11,6 +11,9 @@ const { red } = require('colors/safe');
 // Add custom message and delimiter
 prompt.message = red('BANGAZON');
 prompt.delimiter = ' ';
+// Set to 0 to avoid querying for undefined
+process.env.CURRENT_ORDER_ID = 0;
+process.env.CURRENT_USER_ID = 0;
 
 
 // Display startMenu and activates prompt and main switch statement
