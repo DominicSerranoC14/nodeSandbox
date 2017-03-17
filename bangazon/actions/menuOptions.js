@@ -4,6 +4,7 @@ const { createCustomer } = require('./createCustomer.js');
 const { showActiveCustomers } = require('./activeCustomer.js');
 const { getPaymentOptions } = require('./paymentOption.js');
 const { determineIfUnpaidOrder } = require('./createOrder');
+const { determineIfUnpaidOrderForCompletion } = require('./completeOrder');
 // prompt.start() is not needed, require seems to activate it
 const prompt = require('prompt');
 const { red } = require('colors/safe');
@@ -48,7 +49,7 @@ Please enter your selection (numbers only).
         break;
       case 5:
         // 5. Complete an order
-        console.log('5');
+        determineIfUnpaidOrderForCompletion();
         break;
       case 6:
         // 6. See product popularity

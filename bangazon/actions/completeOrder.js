@@ -3,10 +3,8 @@
 const { DB, errHandler } = require('../db.js');
 const prompt = require('prompt');
 
-process.env.CURRENT_USER_ID = 1;
-process.env.CURRENT_ORDER_ID = 1;
 
-const determineIfUnpaidOrder = () => {
+const determineIfUnpaidOrderForCompletion = () => {
   let userId = process.env.CURRENT_USER_ID;
   // Check to make sure there is an active user
   if (!userId) {
@@ -47,14 +45,61 @@ const determineIfOrderHasProducts = () => {
       return setTimeout(require('./menuOptions.js').startMenu, 1500);
     };
 
-    console.log("Let's complete it!");
+    // Prompt user to complete order
+    completeOrder();
+  });
+};
+
+
+const completeOrder = () => {
+  let orderId = process.env.CURRENT_ORDER_ID;
+
+  // Select the sum of all orderLineItems associated with order
+  DB.get(`select li.orderId, sum(p.price) as price from
+    orderLineItems li, products p
+    where orderId = ${orderId}
+    and li.productId = p.productId
+  `, (err, { price }) => {
+
+    console.log(`\nYour order total is $${price}. Ready to purchase?\n`);
+    // Prompt user to complete order, y or n
+    prompt.get({name: '$', description: 'Y/N'}, (err, { $ }) => {
+      $ = $.toLowerCase();
+
+      // Redirect to main menu on 'n'
+      if ($ === 'n') {
+        return setTimeout(require('./menuOptions.js').startMenu, 1000);
+      };
+
+      // Check to see if cusomter has entered paymentOptions
+      determinePaymentOptions();
+
+    });
 
   });
 
 };
 
 
+const determinePaymentOptions = () => {
+  let userId = process.env.CURRENT_USER_ID;
+
+  // Query DB to test if user has inserted Payment options
+  DB.all(`select * from paymentOptions
+    where customerId = ${userId}
+  `, (err, resultArray) => {
+
+    // If customer has no payment options
+    if (resultArray.length < 1) {
+      console.log('Please enter a payment option first to complete order.\n');
+      return require('./paymentOption.js').getPaymentOptions();
+    };
+
+    console.log('Need to prompt user which paymentOption to use now');
+
+  });
+
+};
 
 
-
-determineIfUnpaidOrder();
+module.exports = { determineIfUnpaidOrderForCompletion };

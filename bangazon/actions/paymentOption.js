@@ -45,7 +45,7 @@ const setPaymentOptions = ({ paymentType, accountNumber }) => {
     DB.run(`insert into paymentOptions values
       (null, ${customerId}, "${paymentType.toUpperCase()}", "${accountNumber}")`, errHandler);
 
-    console.log(`\nA ${paymentType} Payment Option has been saved to your accout.\n`);
+    console.log(`\nA ${paymentType} Payment Option has been saved to your account.\n`);
     // Navigate to startMenu
     setTimeout(require('./menuOptions.js').startMenu, 2000);
   });
