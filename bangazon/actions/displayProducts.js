@@ -38,7 +38,7 @@ const addProductToOrder = () => {
   prompt.get('$', (err, { $ }) => {
 
     // Back to main menu option
-    if (parseInt($) === 0) {
+    if ($ == 0) {
       return require('./menuOptions.js').startMenu();
     };
 

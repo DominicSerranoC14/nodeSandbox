@@ -5,6 +5,7 @@ const { showActiveCustomers } = require('./activeCustomer.js');
 const { getPaymentOptions } = require('./paymentOption.js');
 const { determineIfUnpaidOrder } = require('./createOrder');
 const { determineIfUnpaidOrderForCompletion } = require('./completeOrder');
+const { displayPopList } = require('./productPop.js');
 // prompt.start() is not needed, require seems to activate it
 const prompt = require('prompt');
 const { red } = require('colors/safe');
@@ -56,7 +57,7 @@ Please enter your selection (numbers only).
         break;
       case 6:
         // 6. See product popularity
-        console.log('6');
+        displayPopList();
         break;
       case 7:
         // 7. Leave Bangazon!
@@ -71,5 +72,14 @@ Please enter your selection (numbers only).
   });
 
 };
+
+
+// Trying to control forced process exits here
+process.on('exit', (err, what) => {
+  // process.open();
+  console.log('process.exit');
+  console.log('\nOops! Something went wrong.');
+});
+
 
 module.exports = { startMenu };
