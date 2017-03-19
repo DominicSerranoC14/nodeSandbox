@@ -21,9 +21,27 @@ const t = new Table({
   , colWidths: [18, 11, 11, 15]
 });
 
-t.push(
-  ['google.com', 5, 6, 123.00],
-  ['google.com', 5, 6, 123.00]
-);
 
-console.log(t.toString())
+// console.log(t.toString())
+
+DB.each(`
+  select p.productId, p.name,
+  count(li.orderId) as orderTotal,
+  count(distinct o.customerId) as customerTotal,
+  sum(li.price) as revenue
+  from products p
+  left join orderLineItems li
+  on p.productId = li.productId
+  left join orders o
+  on o.orderId = li.orderId
+  group by p.productId
+  order by orderTotal desc
+`, (err, { productId, name, orderTotal, customerTotal, revenue }) => {
+  errHandler(err);
+
+  // Push each result to the pop table
+  t.push(
+    [name, orderTotal, customerTotal, `${(revenue)?`$${revenue}`:'$0.00'}`]
+  );
+// Completion callback
+}, (err, result) => console.log(t.toString()));

@@ -27,7 +27,6 @@ const determineIfUnpaidOrder = () => {
 
     // If all orders are paid, create a new order for the customer
     createOrder();
-    getAllProducts();
   });
 
 };
@@ -40,7 +39,7 @@ const createOrder = () => {
     // Insert a new order with the current users id
     // and a payment value of false (not paid)
     DB.run(`insert into orders values (
-      null, ${process.env.CURRENT_USER_ID},
+      null, ${userId},
       null, -1
     )`, errHandler)
     // Query the order that was just inserted
@@ -50,6 +49,8 @@ const createOrder = () => {
       errHandler(err);
       // Set current order id
       process.env.CURRENT_ORDER_ID = orderId;
+      // Make sure to call getAllProducts after the current orderId has been set
+      getAllProducts();
     });
 };
 

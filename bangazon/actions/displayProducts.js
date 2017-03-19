@@ -42,11 +42,16 @@ const addProductToOrder = () => {
       return require('./menuOptions.js').startMenu();
     };
 
-    // Insert product to orderLineItems table with orderId
-    DB.run(`insert into orderLineItems values (
-      null, ${orderId}, ${$}
-    )`, errHandler)
-    .run(``, getAllProducts);
+    DB.get(`select * from products where productId = ${$}`,
+      (err, { productId, price }) => {
+      errHandler(err);
+      // Insert product to orderLineItems table with orderId
+      DB.run(`insert into orderLineItems values (
+        null, ${orderId}, ${productId}, ${price}
+      )`, errHandler)
+      .run(``, getAllProducts);
+
+    });
 
   });
 
