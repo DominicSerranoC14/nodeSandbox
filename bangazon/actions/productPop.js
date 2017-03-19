@@ -1,20 +1,20 @@
 'use strict';
+'use strict';
 
 const { DB, errHandler } = require('../db.js');
 const Table = require('cli-table');
 const prompt = require('prompt');
 const { red } = require('colors/safe');
-let orderSum = [], customerSum = [], revenueSum = [];
-
-
-// Create new Table
-const t = new Table({
-    head: ['Products', 'Orders', 'Customers', 'Revenue']
-  , colWidths: [18, 11, 11, 15]
-});
-
 
 const displayPopList = () => {
+  // Create new Table
+  const t = new Table({
+      head: ['Products', 'Orders', 'Customers', 'Revenue']
+    , colWidths: [18, 11, 11, 15]
+  });
+
+  let orderSum = [], customerSum = [], revenueSum = [];
+
   // Select productId, productName, orderTotal, customerTotal, and revenueTotal
   // for each product.
   // If two products have equal Totals, revenueTotal will be the deciding factor in
@@ -55,7 +55,7 @@ const displayPopList = () => {
     .reduce((a,b) => a + b);
 
     // Push each category sum to the table and display
-    t.push([red('Totals:'), red(orderSum), red(customerSum), red(`$${revenueSum}`)]);
+    t.push([red('Totals:'), red(orderSum), red(customerSum), red(`$${revenueSum.toFixed(2)}`)]);
     console.log(t.toString());
 
     // Open prompt
