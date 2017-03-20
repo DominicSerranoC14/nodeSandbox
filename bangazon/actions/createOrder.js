@@ -2,27 +2,27 @@
 
 const { DB, errHandler } = require('../db.js');
 const { getAllProducts } = require('./displayProducts');
+const { checkForActiveCustomer } = require('./helper.js');
 
 
 const determineIfUnpaidOrder = () => {
   let userId = process.env.CURRENT_USER_ID;
   // Check to make sure there is an active user
-  if (userId == 0) {
-    console.log('\nPlease create or choose an active customer.\n');
-    return setTimeout(require('./menuOptions.js').startMenu, 1500);
+  if (!checkForActiveCustomer(userId)) {
+    return;
   };
 
   // Query to find unpaid orders for current customer
-  DB.all(`select * from orders
+  DB.get(`select * from orders
     where customerId = ${userId}
     and paymentStatus = -1
-  `, (err, resultArray) => {
+  `, (err, result) => {
     errHandler(err);
 
     // If there is an unpaid order, return that order obj
-    if (resultArray.length > 0) {
+    if (result) {
       getAllProducts();
-      return process.env.CURRENT_ORDER_ID = resultArray[0].orderId;
+      return process.env.CURRENT_ORDER_ID = result.orderId;
     };
 
     // If all orders are paid, create a new order for the customer

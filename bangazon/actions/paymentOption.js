@@ -1,30 +1,18 @@
 'use strict';
 
 const { DB, errHandler } = require('../db.js');
+const { checkForActiveCustomer } = require('./helper.js');
 const prompt = require('prompt');
-
-
-// Defining schema for payment prompt
-let list = [
-  { name: 'paymentType', required: true,
-    message: 'Please enter a payment type',
-    description: 'Enter payment type (e.g. AmEx, Visa, Checking)'
-  },
-  {
-    name: 'accountNumber', required: true,
-    message: 'Please enter an account number',
-    description: 'Enter account number'
-  }
-];
+const list = require('../promptSchema/paymentOptions.js');
 
 
 // Prompt user for payment info
 const getPaymentOptions = () => {
-  // Determine if there is an active user
   let userId = process.env.CURRENT_USER_ID;
-  if (userId == 0) {
-    console.log(`\nPlease create or choose a customer.`);
-    return setTimeout(require('./menuOptions.js').startMenu, 1500);
+
+  // Determine if there is an active user
+  if (!checkForActiveCustomer(userId)) {
+    return;
   };
 
   // If active user, begin prompt
@@ -32,6 +20,7 @@ const getPaymentOptions = () => {
   prompt.get(list, (err, resultObj) => {
     setPaymentOptions(resultObj);
   });
+
 };
 
 
