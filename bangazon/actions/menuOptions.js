@@ -28,12 +28,13 @@ ${(user) ? `Welcome ${user}! What would you like to do?\n` : '' }
 4. Add product to shopping cart
 5. Complete an order
 6. See product popularity
-7. Leave Bangazon!
+7. Leave Bangazon
 
 Please enter your selection (numbers only).
 `);
+  // Create schema for menu prompt
   let q = {name: '$', required: true,
-  description: 'Enterselection', message: 'Invalid response'};
+  description: 'Enter selection', message: 'Invalid response'};
 
   prompt.get(q, (err, { $ }) => {
     switch(parseInt($)) {
