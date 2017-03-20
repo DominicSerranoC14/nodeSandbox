@@ -11,13 +11,15 @@ const getPaymentOptions = () => {
   let userId = process.env.CURRENT_USER_ID;
 
   // Determine if there is an active user
-  if (checkForActiveCustomer(userId)) {
-    // If active user, begin prompt
-    console.log(`\nPlease enter the following information.\n`);
-    prompt.get(list, (err, resultObj) => {
-      setPaymentOptions(resultObj);
-    });
+  if (!checkForActiveCustomer(userId)) {
+    return;
   };
+
+  // If active user, begin prompt
+  console.log(`\nPlease enter the following information.\n`);
+  prompt.get(list, (err, resultObj) => {
+    setPaymentOptions(resultObj);
+  });
 
 };
 
