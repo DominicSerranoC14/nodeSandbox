@@ -33,8 +33,8 @@ ${(user) ? `Welcome ${user}! What would you like to do?\n` : '' }
 Please enter your selection (numbers only).
 `);
   // Create schema for menu prompt
-  let q = {name: '$', required: true,
-  description: 'Enter selection', message: 'Invalid response'};
+  let q = {name: '$', required: true, type: 'integer',
+  description: 'Enter selection', message: 'Invalid response, numbers only'};
 
   prompt.get(q, (err, { $ }) => {
     switch(parseInt($)) {
@@ -73,7 +73,6 @@ Please enter your selection (numbers only).
         break;
     };
   });
-
 };
 
 
