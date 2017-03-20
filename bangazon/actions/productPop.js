@@ -1,5 +1,4 @@
 'use strict';
-'use strict';
 
 const { DB, errHandler } = require('../db.js');
 const Table = require('cli-table');
@@ -34,6 +33,7 @@ const displayPopList = () => {
   `, (err, { productId, name, orderTotal, customerTotal, revenue }) => {
     errHandler(err);
 
+    // Set revenue to $0.00 if value is null
     revenue = revenue ?`$${revenue}`:'$0.00';
 
     // Push each value to sum arrays to calculate totals
@@ -42,25 +42,33 @@ const displayPopList = () => {
     revenueSum.push(revenue);
 
     // Push each result to the pop table
-    t.push(
-      [name, orderTotal, customerTotal, revenue]
-    );
+    t.push([name, orderTotal, customerTotal, revenue]);
+
   // Completion callback
-  }, (err, result) => {
-
-    // Reduce each of the sum arrays
-    orderSum = orderSum.reduce((a,b) => a + b);
-    customerSum = customerSum.reduce((a,b) => a + b);
-    revenueSum = revenueSum.map(each => Number(each.split('$')[1]))
-    .reduce((a,b) => a + b);
-
-    // Push each category sum to the table and display
-    t.push([red('Totals:'), red(orderSum), red(customerSum), red(`$${revenueSum.toFixed(2)}`)]);
-    console.log(t.toString());
-
-    // Open prompt
-    openPopPrompt();
+}, (err, result) => {
+    errHandler(err);
+    // Create an object of the sumArrays and table array to pass to reduce function
+    let sumArrayObj = { t, orderSum, customerSum, revenueSum };
+    reduceAndPushTotalsToTable(sumArrayObj);
   });
+};
+
+
+// Reduce each array of value totals and push them to the table array
+const reduceAndPushTotalsToTable = (sumArrayObj) => {
+  let { t, orderSum, customerSum, revenueSum } = sumArrayObj;
+  // Reduce each of the sum arrays
+  orderSum = orderSum.reduce((a,b) => a + b);
+  customerSum = customerSum.reduce((a,b) => a + b);
+  revenueSum = revenueSum.map(each => Number(each.split('$')[1]))
+  .reduce((a,b) => a + b);
+
+  // Push each category sum to the table and display
+  t.push([red('Totals:'), red(orderSum), red(customerSum), red(`$${revenueSum.toFixed(2)}`)]);
+  console.log(t.toString() + '\n');
+
+  // Open prompt
+  openPopPrompt();
 };
 
 
