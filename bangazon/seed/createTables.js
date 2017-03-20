@@ -35,6 +35,7 @@ DB.run(`create table if not exists customers
   (orderLineItemsId INTEGER PRIMARY KEY,
   orderId INT,
   productId INT,
+  price INT,
   FOREIGN KEY(orderId) references orders(orderId),
   FOREIGN KEY(productId) references products(productId))
 `, errHandler);

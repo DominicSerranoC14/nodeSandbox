@@ -21,8 +21,8 @@ let list = [
 // Prompt user for payment info
 const getPaymentOptions = () => {
   // Determine if there is an active user
-  let user = process.env.CURRENT_USER;
-  if (!user) {
+  let userId = process.env.CURRENT_USER_ID;
+  if (userId == 0) {
     console.log(`\nPlease create or choose a customer.`);
     return setTimeout(require('./menuOptions.js').startMenu, 1500);
   };
@@ -37,15 +37,16 @@ const getPaymentOptions = () => {
 
 // Get customerId and insert paymentOptions
 const setPaymentOptions = ({ paymentType, accountNumber }) => {
+  let userId = process.env.CURRENT_USER_ID;
+
   // Query the database for the active customers customerId
-  let user = process.env.CURRENT_USER;
-  DB.get(`select customerId from customers where name = "${user}"`, (err, { customerId }) => {
+  DB.get(`select customerId from customers where customerId = "${userId}"`, (err, { customerId }) => {
     errHandler(err);
     // Insert paymentOption info into DB
     DB.run(`insert into paymentOptions values
       (null, ${customerId}, "${paymentType.toUpperCase()}", "${accountNumber}")`, errHandler);
 
-    console.log(`\nA ${paymentType} Payment Option has been saved to your accout.\n`);
+    console.log(`\nA ${paymentType} Payment Option has been saved to your account.\n`);
     // Navigate to startMenu
     setTimeout(require('./menuOptions.js').startMenu, 2000);
   });

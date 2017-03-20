@@ -5,15 +5,17 @@ const prompt = require('prompt');
 
 
 const showActiveCustomers = () => {
+  let resultArray;
   // Query the database for all customers
   DB.all(`select customerId, name from customers`, (err, results) => {
     errHandler(err);
+    resultArray = results;
 
     // If no user has been created
     if (results.length < 1) {
       console.log(`\nPlease create a customer first.\n`);
       return setTimeout(require('./menuOptions.js').startMenu, 1500);
-    }
+    };
 
     // If there are user(s) log each out to the console
     console.log('\nWhich customer will be active?\n');
@@ -24,8 +26,8 @@ const showActiveCustomers = () => {
     console.log('');
 
   })
-  // Chain onto the DB and execute setActiveUser after results.forEach has ran
-  .run(``, setActiveUser);
+  // Will run after the DB.all block, will only open prompt if users present
+  .run(``, () => (resultArray.length > 0) ? setActiveUser(): false);
 };
 
 
@@ -53,8 +55,10 @@ const setActiveUser = () => {
       // Store the current user on the process.env obj
       let [{name}] = results;
       process.env.CURRENT_USER = name;
+      process.env.CURRENT_USER_ID = $;
+      console.log("process.env.CURRENT_USER_ID", process.env.CURRENT_USER_ID);
       // Require in startMenu method here to avoid circular dep
-      setTimeout(require('./menuOptions.js').startMenu, 2000);
+      setTimeout(require('./menuOptions.js').startMenu, 1500);
     });
   });
 };

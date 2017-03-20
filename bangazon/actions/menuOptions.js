@@ -1,14 +1,20 @@
 'use strict';
 
-const readline = require('readline');
 const { createCustomer } = require('./createCustomer.js');
 const { showActiveCustomers } = require('./activeCustomer.js');
 const { getPaymentOptions } = require('./paymentOption.js');
+const { determineIfUnpaidOrder } = require('./createOrder');
+const { determineIfUnpaidOrderForCompletion } = require('./completeOrder');
+const { displayPopList } = require('./productPop.js');
 // prompt.start() is not needed, require seems to activate it
 const prompt = require('prompt');
+const { red } = require('colors/safe');
 // Add custom message and delimiter
-prompt.message = 'BANGAZON';
+prompt.message = red('BANGAZON');
 prompt.delimiter = ' ';
+// Set to 0 to avoid querying for undefined
+process.env.CURRENT_ORDER_ID = 0;
+process.env.CURRENT_USER_ID = 0;
 
 
 // Display startMenu and activates prompt and main switch statement
@@ -26,8 +32,10 @@ ${(user) ? `Welcome ${user}! What would you like to do?\n` : '' }
 
 Please enter your selection (numbers only).
 `);
+  let q = {name: '$', required: true,
+  description: 'Enterselection', message: 'Invalid response'};
 
-  prompt.get('$', (err, { $ }) => {
+  prompt.get(q, (err, { $ }) => {
     switch(parseInt($)) {
       case 1:
         // 1. Create new customer
@@ -43,15 +51,15 @@ Please enter your selection (numbers only).
         break;
       case 4:
         // 4. Add product to shopping cart
-        console.log('4');
+        determineIfUnpaidOrder();
         break;
       case 5:
         // 5. Complete an order
-        console.log('5');
+        determineIfUnpaidOrderForCompletion();
         break;
       case 6:
         // 6. See product popularity
-        console.log('6');
+        displayPopList();
         break;
       case 7:
         // 7. Leave Bangazon!
@@ -66,5 +74,14 @@ Please enter your selection (numbers only).
   });
 
 };
+
+
+// Trying to control forced process exits here
+process.on('exit', (err, what) => {
+  // process.open();
+  console.log('process.exit');
+  console.log('\nOops! Something went wrong.');
+});
+
 
 module.exports = { startMenu };
