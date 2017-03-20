@@ -3,7 +3,8 @@
 const { createCustomer } = require('./createCustomer.js');
 const { showActiveCustomers } = require('./activeCustomer.js');
 const { getPaymentOptions } = require('./paymentOption.js');
-const { determineIfUnpaidOrder } = require('./createOrder');
+const { determineIfUnpaidOrder } = require('./createOrder.js');
+const { checkForCurrentOrder } = require('./currentOrder.js');
 const { determineIfUnpaidOrderForCompletion } = require('./completeOrder');
 const { displayPopList } = require('./productPop.js');
 // prompt.start() is not needed, require seems to activate it
@@ -26,9 +27,10 @@ ${(user) ? `Welcome ${user}! What would you like to do?\n` : '' }
 2. Choose active customer
 3. Create a payment option
 4. Add product to shopping cart
-5. Complete an order
-6. See product popularity
-7. Leave Bangazon
+5. Display all orders
+6. Complete an order
+7. See product popularity
+8. Leave Bangazon
 
 Please enter your selection (numbers only).
 `);
@@ -55,15 +57,19 @@ Please enter your selection (numbers only).
         determineIfUnpaidOrder();
         break;
       case 5:
-        // 5. Complete an order
-        determineIfUnpaidOrderForCompletion();
+        // 5. Display active customers orders
+        checkForCurrentOrder();
         break;
       case 6:
-        // 6. See product popularity
-        displayPopList();
+        // 6. Complete an order
+        determineIfUnpaidOrderForCompletion();
         break;
       case 7:
-        // 7. Leave Bangazon!
+        // 7. See product popularity
+        displayPopList();
+        break;
+      case 8:
+        // 8. Leave Bangazon!
         console.log('\nGoodbye!');
         process.exit();
         break;
