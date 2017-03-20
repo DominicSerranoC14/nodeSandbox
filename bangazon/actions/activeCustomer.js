@@ -6,6 +6,7 @@ const prompt = require('prompt');
 
 // Display all customers
 const showActiveCustomers = () => {
+  console.log('');
   // Query the database for all customers
   DB.each(`select customerId, name from customers`, (err, { customerId, name}) => {
     errHandler(err);
