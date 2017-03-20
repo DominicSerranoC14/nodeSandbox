@@ -32,8 +32,10 @@ ${(user) ? `Welcome ${user}! What would you like to do?\n` : '' }
 
 Please enter your selection (numbers only).
 `);
+  let q = {name: '$', required: true,
+  description: 'Enterselection', message: 'Invalid response'};
 
-  prompt.get('$', (err, { $ }) => {
+  prompt.get(q, (err, { $ }) => {
     switch(parseInt($)) {
       case 1:
         // 1. Create new customer

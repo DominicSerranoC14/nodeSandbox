@@ -7,7 +7,6 @@ const prompt = require('prompt');
 const getAllProducts = () => {
   let userId = process.env.CURRENT_USER_ID;
   // Check to see if there is a current user
-  console.log("userId", typeof userId);
   if (userId == 0) {
     console.log('\nPlease create or choose an active customer.\n');
     return setTimeout(require('./menuOptions.js').startMenu, 1500);
