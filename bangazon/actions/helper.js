@@ -14,7 +14,6 @@ const checkForActiveCustomer = (customerId) => {
     setTimeout(require('./menuOptions.js').startMenu, 1500);
     return false;
   };
-
   return true;
 };
 
