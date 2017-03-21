@@ -16,12 +16,22 @@ app.use(express.static('public'));
 // A new body object containing the parsed data is populated on the request object after the middleware (i.e. req.body). This object will contain key-value pairs, where the value can be a string or array (when extended is false), or any type (when extended is true).
 app.use(bodyParser.urlencoded({extended: false}));
 
+// Home route
+app.get('/home', (req, res) => {
+  res.render('home');
+});
+
 // Login routes
 app.get('/', (req, res) => {
   res.render('index');
 });
 
 app.post('/', ({ body: {username, password} }, res) => {
+  // Check to make sure there is a username and password entered
+  if (!username || !password) {
+    return res.render('index', {err: 'Please enter username and password.'});
+  };
+
   // Check for existing user and return username and password
   db('users').where({ 'username': username })
   .first(['username', 'password'])
@@ -44,8 +54,10 @@ app.post('/', ({ body: {username, password} }, res) => {
     };
 
   })
-  .catch((err) => console.log(err.toString()));
-
+  .catch((err) => {
+    console.log(err.toString());
+    res.send({ err: 'Oops, please try again.' });
+  });
 });
 
 // Register routes
@@ -54,6 +66,11 @@ app.get('/register', (req, res) => {
 });
 
 app.post('/register', ({body: {username, password}}, res) => {
+  // Check to make sure there is a username and password entered
+  if (!username || !password) {
+    return res.render('register', {err: 'Please enter username and password.'});
+  };
+
   // Check users table to see if there is already a user saved with the same username
   db('users').where({ 'username': username })
   .first('username')
@@ -75,24 +92,18 @@ app.post('/register', ({body: {username, password}}, res) => {
           .then((result) => {
             // Send success msg if registered
             res.redirect('/home');
-          })
-          .catch((err) => {
-            console.log(err.toString());
-            res.send({ err: 'Oops, please try again.' });
           });
-        })
-      })
+        });
+      });
     };
 
-
   })
-  .catch((err) => console.log(err.toString()))
+  .catch((err) => {
+    console.log(err.toString());
+    res.send({ err: 'Oops, please try again.' });
+  });
 
-});
 
-// Home route
-app.get('/home', (req, res) => {
-  res.render('home');
 });
 
 
